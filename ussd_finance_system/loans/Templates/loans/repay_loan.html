@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Repay Loan</title>
+</head>
+<body>
+
+<h2>Repay Loan</h2>
+
+<h3>
+Remaining Balance:
+{{ loan.remaining_balance }}
+</h3>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <label>Amount Paid</label>
+
+    <input type="number"
+           name="amount_paid">
+
+    <br><br>
+
+    <button type="submit">
+        Submit Payment
+    </button>
+
+</form>
+
+</body>
+</html>

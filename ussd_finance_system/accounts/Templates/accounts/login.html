@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trader Login</title>
+</head>
+<body>
+
+<h2>Trader Login</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <label>Phone Number</label>
+    <input type="text" name="phone_number">
+
+    <br><br>
+
+    <label>PIN</label>
+    <input type="password" name="pin">
+
+    <br><br>
+
+    <button type="submit">
+        Login
+    </button>
+
+</form>
+
+</body>
+</html>

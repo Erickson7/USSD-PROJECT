@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Loans</title>
+</head>
+<body>
+
+<h2>My Loans</h2>
+
+<table border="1">
+
+<tr>
+    <th>Loan Amount</th>
+    <th>Interest</th>
+    <th>Total Amount</th>
+    <th>Paid</th>
+    <th>Balance</th>
+    <th>Status</th>
+    <th>Due Date</th>
+    <th>Action</th>
+</tr>
+
+{% for loan in loans %}
+
+<tr>
+
+    <td>{{ loan.loan_amount }}</td>
+
+    <td>{{ loan.interest_rate }}%</td>
+
+    <td>{{ loan.total_amount }}</td>
+
+    <td>{{ loan.amount_paid }}</td>
+
+    <td>{{ loan.remaining_balance }}</td>
+
+    <td>{{ loan.status }}</td>
+
+    <td>{{ loan.due_date }}</td>
+
+    <td>
+    <a href="/loans/repay/{{ loan.id }}/">
+        Repay
+    </a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

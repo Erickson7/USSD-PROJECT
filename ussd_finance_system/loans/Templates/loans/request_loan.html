@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Request</title>
+</head>
+<body>
+
+<h2>Request Loan</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <label>Loan Amount</label>
+    <input type="number" name="loan_amount">
+
+    <br><br>
+
+    <label>Interest Rate (%)</label>
+    <input type="number" name="interest_rate" value="10">
+
+    <br><br>
+
+    <label>Duration (Months)</label>
+    <input type="number" name="duration_months">
+
+    <br><br>
+
+    <label>Purpose</label>
+    <textarea name="purpose"></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Submit Loan Request
+    </button>
+
+</form>
+
+</body>
+</html>

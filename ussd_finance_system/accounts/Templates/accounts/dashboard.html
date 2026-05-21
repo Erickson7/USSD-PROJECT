@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Welcome {{ trader.full_name }}</h1>
+
+<h3>Phone Number:
+    {{ trader.phone_number }}
+</h3>
+
+<br>
+
+<a href="/transactions/sale/">
+    Record Sale
+</a>
+
+<br><br>
+
+<a href="/transactions/expense/">
+    Record Expense
+</a>
+
+<br><br>
+
+<a href="/transactions/summary/">
+    Financial Summary
+</a>
+
+<br><br>
+
+<a href="/accounts/logout/">
+    Logout
+</a>
+
+<br><br>
+
+<a href="/loans/request/">
+    Request Loan
+</a>
+
+<br><br>
+
+<a href="/loans/my-loans/">
+    View My Loans
+</a>
+
+</body>
+</html>

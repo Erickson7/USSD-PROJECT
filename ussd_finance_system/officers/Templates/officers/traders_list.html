@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Traders</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3>Registered Traders</h3>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Business</th>
+                        <th>Phone</th>
+                        <th>National ID</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for trader in traders %}
+
+                    <tr>
+
+                        <td>{{ trader.full_name }}</td>
+
+                        <td>{{ trader.business_name }}</td>
+
+                        <td>{{ trader.phone_number }}</td>
+
+                        <td>{{ trader.national_id }}</td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4">
+                            No traders found
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

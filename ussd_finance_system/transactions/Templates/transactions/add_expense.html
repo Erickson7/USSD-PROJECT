@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Expense</title>
+
+    
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Record Expense</h2>
+    <div class="subtitle">Track business spending easily</div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Trader</label>
+            <select name="trader">
+                {% for trader in traders %}
+                    <option value="{{ trader.id }}">
+                        {{ trader.full_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Amount</label>
+            <input type="number" name="amount" placeholder="Enter expense amount">
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" name="description" placeholder="Enter expense description">
+        </div>
+
+        <button type="submit">Save Expense</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
