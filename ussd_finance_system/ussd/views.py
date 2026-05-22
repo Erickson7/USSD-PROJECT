@@ -6,7 +6,7 @@ from transactions.models import Transaction
 from loans.models import Loan, LoanRepayment
 from transactions.models import Transaction, Debt
 from tax.models import Tax, TaxPayment
-from sms import sms
+from ussd_finance_system.sms import sms
 
 
 
