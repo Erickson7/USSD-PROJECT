@@ -7,6 +7,7 @@ from loans.models import Loan, LoanRepayment
 from transactions.models import Transaction, Debt
 from tax.models import Tax, TaxPayment
 from ussd_finance_system.sms import sms
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -86,7 +87,11 @@ def calculate_loan_score(trader):
     return score
 
 
+
+
+@csrf_exempt
 def ussd_callback(request):
+
 
     text = request.POST.get('text', '')
     user_response = text.split('*')
