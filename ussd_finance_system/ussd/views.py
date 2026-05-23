@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from datetime import date, timedelta
 
 from accounts.models import Trader
@@ -92,11 +92,17 @@ def calculate_loan_score(trader):
 @csrf_exempt
 def ussd_callback(request):
 
+    if request.method != "POST":
+
+        return HttpResponseNotAllowed(["POST"])
+
 
     text = request.POST.get('text', '')
-    user_response = text.split('*')
+    phone_number = request.POST.get('phoneNumber', '')
 
-    response = ""
+    # Define user_response by splitting text with '*' delimiter
+    # USSD typically sends menu path like "1*2*3" for nested selections
+    user_response = text.split('*') if text else []
 
     # =====================================
     # MAIN MENU
@@ -160,11 +166,11 @@ def ussd_callback(request):
 
     elif len(user_response) == 2 and user_response[0] == "2":
 
-        pin = user_response[1]
+        
 
         try:
 
-            Trader.objects.get(pin=pin)
+            Trader.objects.get(pin=user_response[1])
 
             response = "CON Choose Option\n"
             response += "1. Record Sale\n"
@@ -186,11 +192,11 @@ def ussd_callback(request):
 
     elif len(user_response) == 3 and user_response[0] == "2":
 
-        pin = user_response[1]
+        
 
         try:
 
-            trader = Trader.objects.get(pin=pin)
+            trader = Trader.objects.get(pin=user_response[1])
 
             option = user_response[2]
 
@@ -263,21 +269,20 @@ def ussd_callback(request):
 
                 response = f"END Total Income: {total_income}"
 
+            # =====================================
+            # TAX MENU
+            # =====================================
 
-                # =====================================
-                # TAX MENU
-                # =====================================
+            elif option == "6":
+                response = "CON Tax Menu\n"
+                response += "1. View Tax\n"
+                response += "2. Pay Tax"
 
-            elif option=="6":
-                response="CON Tax Menu\n"
-                response +="1.View Tax\n"
-                response +="2.Pay Tax"
-
-           # =====================================
-           # RECORD DEBTS
-           # =====================================
-            elif option=="7":
-                response="CON Enter Customer Name\n"
+            # =====================================
+            # RECORD DEBTS
+            # =====================================
+            elif option == "7":
+                response = "CON Enter Customer Name\n"
                 
             # =====================================
             # LOGOUT
@@ -440,6 +445,47 @@ def ussd_callback(request):
 
                     response = "END Invalid Loan Option"
 
+            # =====================================
+            # TAX OPTIONS
+            # =====================================
+
+            elif option == "6":
+
+                tax_option = user_response[3]
+
+                # VIEW TAX
+                if tax_option == "1":
+
+                    sales = Transaction.objects.filter(
+                        trader=trader,
+                        transaction_type="SALE"
+                    )
+
+                    total_sales = sum(sale.amount for sale in sales)
+                    tax_amount = total_sales * 0.05
+
+                    response = (
+                        f"END Total Sales: {total_sales}\n"
+                        f"Tax Due: {tax_amount}"
+                    )
+
+                # PAY TAX
+                elif tax_option == "2":
+
+                    response = "CON Enter Tax Payment Amount"
+
+                else:
+
+                    response = "END Invalid Tax Option"
+
+            # =====================================
+            # RECORD DEBT STEP 1
+            # =====================================
+
+            elif option == "7":
+
+                response = "CON Enter Debt Amount"
+
             else:
 
                 response = "END Invalid Option"
@@ -447,34 +493,6 @@ def ussd_callback(request):
         except Trader.DoesNotExist:
 
             response = "END Invalid PIN"
-
-    # =====================================
-    # TAX OPTIONS
-    # =====================================
-    elif option=="6":
-        tax_option=user_response[3]
-
-        # VIEW TAX
-        if tax_option=="1":
-            sales=Transaction.objects.filter(
-                trader=trader,
-                transaction_type="SALE"
-            )
-            total_sales=sum(sale.amount for sale in sales)
-            tax_amount=total_sales*0.05
-            response=(
-                f"END Total Sales:{total_sales}\n"
-                f"Tax Due:{tax_amount}"
-            )
-            # PAY TAX
-        elif tax_option=="2":
-            response="CON Enter Tax Payment Amount"
-
-        # =====================================
-        # RECORD DEBT STEP1
-        # =====================================
-        elif option == "7":
-            response="CON Enter Debt Amount\n"
             
     # =====================================
     # FINAL STEP
